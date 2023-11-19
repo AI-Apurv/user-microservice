@@ -74,6 +74,7 @@ export class AuthService {
 
 
 
+
   public async validate(validateRequestDto: ValidateRequestDto): Promise<ValidateResponse> {
     const decoded: Users = await this.jwtService.verify(validateRequestDto.token);
     if (!decoded) {
@@ -159,7 +160,6 @@ export class AuthService {
 
 
   public async changePassword(payload: ChangePasswordRequestDto): Promise<ChangePasswordResponse> {
-    console.log('inside the change password service ', payload)
     const user = await this.userModel.findById(payload.userId);
     if (!user) {
       return { status: HttpStatus.NOT_FOUND, response:userResponse.NOT_EXIST, error:null }

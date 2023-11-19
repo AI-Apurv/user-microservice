@@ -41,7 +41,6 @@ export class AuthController {
 
   @GrpcMethod(AUTH_SERVICE_NAME,'changePassword')
   private changePassword(payload:ChangePasswordRequestDto): Promise<ChangePasswordResponse> {
-    console.log('inside the change password',payload);
     return this.service.changePassword({...payload, userId:payload.userId});
 
   }
