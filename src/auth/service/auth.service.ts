@@ -146,7 +146,6 @@ export class AuthService {
     if (redisOTP == payload.otp ) {
       const hashedPassword = await bcrypt.hash(payload.password, 10);
       const user = await this.userModel.findOne({ email:payload.email });
-      // if (user) await redis.del(email) delete the otp from the redis
       if (user) {
         await this.redisService.redisDel(payload.email);
         user.password = hashedPassword;
@@ -171,7 +170,6 @@ export class AuthService {
     }
     user.password = await this.jwtService.encodePassword(payload.newPassword);
     await user.save();
-
     return { status: HttpStatus.OK, response:userResponse.PASS_CHANGE , error:null };
   }
 
