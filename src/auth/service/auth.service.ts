@@ -139,6 +139,8 @@ export class AuthService {
       else
         console.log('Email sent: ' + info.response);
     })
+    return {status: 200, error: null, response: 'Email sent successfully' }
+
   }
 
   public async resetPassword(payload:ResetPasswordDto):Promise<ResetPasswordResponse> {
@@ -163,11 +165,13 @@ export class AuthService {
     if (!user) {
       return { status: HttpStatus.NOT_FOUND, response:userResponse.NOT_EXIST, error:null }
     }
-
     const isOldPassword = await this.jwtService.isPasswordValid(payload.oldPassword, user.password)
     if (!isOldPassword) {
       return { status: HttpStatus.BAD_REQUEST, response:userResponse.WRONG_PASS, error:null }
     }
+    if(user.password === payload.newPassword)
+    return { status: HttpStatus.BAD_REQUEST, response:userResponse.SAME_PASS , error:null };
+
     user.password = await this.jwtService.encodePassword(payload.newPassword);
     await user.save();
     return { status: HttpStatus.OK, response:userResponse.PASS_CHANGE , error:null };

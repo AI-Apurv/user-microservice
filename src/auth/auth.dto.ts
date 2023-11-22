@@ -1,13 +1,16 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString, Length, Matches, MinLength, isString } from 'class-validator';
 import { ChangePasswordRequest, ForgetPasswordRequest, LoginRequest, LogoutRequest, RegisterRequest, ResetPasswordRequest, UpdateRequest, ValidateRequest } from './auth.pb';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginRequestDto implements LoginRequest {
   @IsEmail()
   @IsNotEmpty()
+  @ApiProperty()
   public readonly email: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   public readonly password: string;
 }
 

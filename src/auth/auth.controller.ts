@@ -1,7 +1,7 @@
-import { Body, Controller, Inject } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { ChangePasswordRequestDto, ForgetPasswordDto, LoginRequestDto, LogoutRequestDto, RegisterRequestDto, ResetPasswordDto, UpdateRequestDto, ValidateRequestDto } from './auth.dto';
-import { AUTH_SERVICE_NAME, RegisterResponse, LoginResponse, ValidateResponse, LogoutResponse, LogoutRequest, UpdateRequest, UpdateResponse, ChangePasswordRequest, ChangePasswordResponse, ResetPasswordRequest } from './auth.pb';
+import { AUTH_SERVICE_NAME, RegisterResponse, LoginResponse, ValidateResponse, LogoutResponse, LogoutRequest, UpdateRequest, UpdateResponse, ChangePasswordRequest, ChangePasswordResponse, ResetPasswordRequest, ForgetPasswordResponse } from './auth.pb';
 import { AuthService } from './service/auth.service';
 
 @Controller()
@@ -30,7 +30,7 @@ export class AuthController {
   }
 
   @GrpcMethod(AUTH_SERVICE_NAME,'forgetPassword')
-  private forgetPassword(payload:ForgetPasswordDto) {
+  private forgetPassword(payload:ForgetPasswordDto):Promise<ForgetPasswordResponse> {
     return this.service.forgetPassword(payload);
   }
 

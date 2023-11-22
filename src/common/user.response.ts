@@ -10,5 +10,6 @@ export const userResponse = {
     PASS_RESET_FAIL: 'Password reset failed ',
     PASS_CHANGE: 'Password change successfully',
     INVALID_TOKEN: 'You are not authorised',
-    LOGOUT: 'User has logged out . please login again'
+    LOGOUT: 'User has logged out . please login again',
+    SAME_PASS: 'New password should be different from old password'
 }
