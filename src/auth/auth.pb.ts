@@ -4,6 +4,26 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
+export interface TransferMoneyRequest {
+  userId: string;
+  sellerId: string;
+  amount: number;
+}
+
+export interface TransferMoneyResponse {
+  status: number;
+  response: string;
+  error: string;
+}
+
+export interface CheckWalletRequest {
+  userId: string;
+}
+
+export interface CheckWalletResponse {
+  walletAmount: number;
+}
+
 export interface RegisterRequest {
   firstName: string;
   lastName: string;
@@ -104,6 +124,17 @@ export interface ResetPasswordResponse {
   response: string;
 }
 
+export interface AddWalletAmountRequest {
+  userId: string;
+  amount: number;
+}
+
+export interface AddWalletAmountResponse {
+  status: number;
+  response: string;
+  error: string[];
+}
+
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
@@ -122,6 +153,12 @@ export interface AuthServiceClient {
   forgetPassword(request: ForgetPasswordRequest): Observable<ForgetPasswordResponse>;
 
   resetPassword(request: ResetPasswordRequest): Observable<ResetPasswordResponse>;
+
+  addWalletAmount(request: AddWalletAmountRequest): Observable<AddWalletAmountResponse>;
+
+  checkWallet(request: CheckWalletRequest): Observable<CheckWalletResponse>;
+
+  moneyTransaction(request: TransferMoneyRequest): Observable<TransferMoneyResponse>;
 }
 
 export interface AuthServiceController {
@@ -146,6 +183,18 @@ export interface AuthServiceController {
   resetPassword(
     request: ResetPasswordRequest,
   ): Promise<ResetPasswordResponse> | Observable<ResetPasswordResponse> | ResetPasswordResponse;
+
+  addWalletAmount(
+    request: AddWalletAmountRequest,
+  ): Promise<AddWalletAmountResponse> | Observable<AddWalletAmountResponse> | AddWalletAmountResponse;
+
+  checkWallet(
+    request: CheckWalletRequest,
+  ): Promise<CheckWalletResponse> | Observable<CheckWalletResponse> | CheckWalletResponse;
+
+  moneyTransaction(
+    request: TransferMoneyRequest,
+  ): Promise<TransferMoneyResponse> | Observable<TransferMoneyResponse> | TransferMoneyResponse;
 }
 
 export function AuthServiceControllerMethods() {
@@ -159,6 +208,9 @@ export function AuthServiceControllerMethods() {
       "changePassword",
       "forgetPassword",
       "resetPassword",
+      "addWalletAmount",
+      "checkWallet",
+      "moneyTransaction",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

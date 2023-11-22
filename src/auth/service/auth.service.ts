@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { JwtService } from './jwt.service';
 import { RegisterRequestDto, LoginRequestDto, ValidateRequestDto, UpdateRequestDto, ForgetPasswordDto, ResetPasswordDto, ChangePasswordRequestDto } from '../auth.dto';
 import { Users } from '../entity/auth.entity';
-import { ChangePasswordRequest, ChangePasswordResponse, ForgetPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResetPasswordRequest, ResetPasswordResponse, UpdateResponse, ValidateResponse } from '../auth.pb';
+import { AddWalletAmountRequest, AddWalletAmountResponse, ChangePasswordRequest, ChangePasswordResponse, CheckWalletRequest, CheckWalletResponse, ForgetPasswordResponse, LoginResponse, LogoutResponse, RegisterResponse, ResetPasswordRequest, ResetPasswordResponse, TransferMoneyRequest, TransferMoneyResponse, UpdateResponse, ValidateResponse } from '../auth.pb';
 import { RedisService } from 'src/providers/redis.service';
 import { Sessions } from '../entity/session.entity';
 import * as nodemailer from 'nodemailer';
@@ -176,6 +176,33 @@ export class AuthService {
     await user.save();
     return { status: HttpStatus.OK, response:userResponse.PASS_CHANGE , error:null };
   }
+
+
+  public async addWalletAmount(payload:AddWalletAmountRequest): Promise<AddWalletAmountResponse> {
+    const user = await this.userModel.findById(payload.userId)
+    if(!user)
+    return {status:HttpStatus.NOT_FOUND, response:userResponse.NOT_EXIST, error: null}
+    user.walletAmount += payload.amount;
+    user.save()
+    return {status:HttpStatus.OK, response:userResponse.AMOUNT_ADDED, error: null}
+  }
+
+  public async checkWallet(payload:CheckWalletRequest): Promise<CheckWalletResponse> {
+    const user = await this.userModel.findById(payload.userId)
+    return {walletAmount:user.walletAmount}
+  }
+
+  public async moneyTransaction(payload:TransferMoneyRequest): Promise<TransferMoneyResponse> {
+    const user = await this.userModel.findById(payload.userId)
+    user.walletAmount -= payload.amount;
+    user.save();
+    const seller = await this.userModel.findById(payload.sellerId)
+    seller.walletAmount += payload.amount;
+    seller.save();
+    return {status:HttpStatus.OK, response: userResponse.TRANSACTION_SUCCESS , error: null}
+  }
+
+
 
 }
 

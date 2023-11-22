@@ -11,5 +11,7 @@ export const userResponse = {
     PASS_CHANGE: 'Password change successfully',
     INVALID_TOKEN: 'You are not authorised',
     LOGOUT: 'User has logged out . please login again',
-    SAME_PASS: 'New password should be different from old password'
+    SAME_PASS: 'New password should be different from old password',
+    AMOUNT_ADDED: 'Amount added to the wallet',
+    TRANSACTION_SUCCESS: 'Transaction completed successfully'
 }

@@ -23,6 +23,9 @@ export class Users extends Document {
 
     @Prop()
     address: string;
+
+    @Prop({default:0})
+    walletAmount: number
 }
 
 export const UserSchema = SchemaFactory.createForClass(Users);
