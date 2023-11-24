@@ -6,9 +6,7 @@ import { AuthService } from './service/auth.service';
 import { JwtService } from './service/jwt.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RedisService } from 'src/providers/redis.service';
 import { RedisModule } from 'src/providers/redis.module';
-import { REDIS_SESSION } from 'src/providers/redis.provider';
 import { SessionSchema } from './entity/session.entity';
 
 @Module({
@@ -18,14 +16,12 @@ import { SessionSchema } from './entity/session.entity';
       signOptions: { expiresIn: '365d' },
     }),
     MongooseModule.forFeature([
-      {name: 'Users', schema: UserSchema},
-      {name: 'Sessions', schema: SessionSchema}
+      { name: 'Users', schema: UserSchema },
+      { name: 'Sessions', schema: SessionSchema },
     ]),
-    RedisModule
+    RedisModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtService, JwtStrategy,],
+  providers: [AuthService, JwtService, JwtStrategy],
 })
 export class AuthModule {}
-
-

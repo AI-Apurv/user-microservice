@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService as Jwt } from '@nestjs/jwt';
 import { InjectModel, MongooseModule } from '@nestjs/mongoose';
-import {Model} from 'mongoose';
+import { Model } from 'mongoose';
 import { Users } from '../entity/auth.entity';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class JwtService {
-  private readonly jwt:Jwt
+  private readonly jwt: Jwt;
   constructor(
     @InjectModel(Users.name)
     private readonly userModel: Model<Users>,
-    jwt:Jwt
+    jwt: Jwt,
   ) {
-    this.jwt = jwt
+    this.jwt = jwt;
   }
 
   // Decoding the JWT Token
@@ -29,11 +29,14 @@ export class JwtService {
 
   // Generate JWT Token
   public generateToken(user: Users): string {
-    return this.jwt.sign({  id: user._id, email: user.email });
+    return this.jwt.sign({ id: user._id, email: user.email });
   }
 
   // Validate User's password
-  public async isPasswordValid(password: string, userPassword: string): Promise<boolean>{
+  public async isPasswordValid(
+    password: string,
+    userPassword: string,
+  ): Promise<boolean> {
     const state = await bcrypt.compare(password, userPassword);
     return state;
   }
@@ -41,7 +44,7 @@ export class JwtService {
   // Encode User's password
   public async encodePassword(password: string): Promise<string> {
     const salt: string = await bcrypt.genSalt(10);
-    return bcrypt.hash(password,salt);
+    return bcrypt.hash(password, salt);
   }
 
   // Validate JWT Token, throw forbidden error if JWT Token is invalid
@@ -49,8 +52,7 @@ export class JwtService {
     try {
       return this.jwt.verify(token);
     } catch (err) {
-        throw new Error('Invalid token');
+      throw new Error('Invalid token');
     }
   }
 }
-
