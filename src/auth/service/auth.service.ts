@@ -1,9 +1,7 @@
 import {
   HttpStatus,
-  Inject,
   Injectable,
   InternalServerErrorException,
-  Session,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -21,7 +19,6 @@ import { Users } from '../entity/auth.entity';
 import {
   AddWalletAmountRequest,
   AddWalletAmountResponse,
-  ChangePasswordRequest,
   ChangePasswordResponse,
   CheckWalletRequest,
   CheckWalletResponse,
@@ -29,7 +26,6 @@ import {
   LoginResponse,
   LogoutResponse,
   RegisterResponse,
-  ResetPasswordRequest,
   ResetPasswordResponse,
   TransferMoneyRequest,
   TransferMoneyResponse,
@@ -56,7 +52,7 @@ export class AuthService {
   public async register(
     registerRequestDto: RegisterRequestDto,
   ): Promise<RegisterResponse> {
-    let user: Users = await this.userModel.findOne({
+    const user: Users = await this.userModel.findOne({
       email: registerRequestDto.email,
     });
     if (user) {
@@ -245,7 +241,7 @@ export class AuthService {
   public async resetPassword(
     payload: ResetPasswordDto,
   ): Promise<ResetPasswordResponse> {
-    let redisOTP = await this.redisService.redisGet(payload.email);
+    const redisOTP = await this.redisService.redisGet(payload.email);
     if (redisOTP == payload.otp) {
       const hashedPassword = await bcrypt.hash(payload.password, 10);
       const user = await this.userModel.findOne({ email: payload.email });

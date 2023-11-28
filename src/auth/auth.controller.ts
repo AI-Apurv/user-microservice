@@ -1,11 +1,9 @@
-import { Body, Controller, HttpStatus, Inject } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   ChangePasswordRequestDto,
   ForgetPasswordDto,
   LoginRequestDto,
-  LogoutRequestDto,
-  RegisterRequestDto,
   ResetPasswordDto,
   UpdateRequestDto,
   ValidateRequestDto,
@@ -16,12 +14,8 @@ import {
   LoginResponse,
   ValidateResponse,
   LogoutResponse,
-  LogoutRequest,
-  UpdateRequest,
   UpdateResponse,
-  ChangePasswordRequest,
   ChangePasswordResponse,
-  ResetPasswordRequest,
   ForgetPasswordResponse,
   AddWalletAmountRequest,
   AddWalletAmountResponse,
